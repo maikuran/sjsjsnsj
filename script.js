@@ -143,34 +143,24 @@ function updateUI(){
         "獲得:"+gain;
 
     game.items.forEach((item,i)=>{
-
-        let div=document.getElementById("item"+i);
-
-        let cost=Math.floor(item.price*Math.pow(1.15,item.count));
-
+    let div=document.getElementById("item"+i);
+    
+    div.onclick=()=>{
+        let cost=Math.floor(item.price*Math.pow(1.15,item.count));  // ← クリック時に計算
+        
         div.innerHTML=
         "<b>"+item.name+"</b><br>"+
         "Lv:"+item.count+"<br>"+
         "+"+item.generate+"/秒<br>"+
         "Cost:"+formatTime(cost);
 
-        div.onclick=()=>{
-
-            if(game.time>=cost){
-
-                game.time-=cost;
-
-                item.count++;
-
-                updateUI();
-
-            }
-
-        };
-
-    });
-
-}
+        if(game.time>=cost){
+            game.time-=cost;
+            item.count++;
+            updateUI();
+        }
+    };
+});
 
 //============================
 
