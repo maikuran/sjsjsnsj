@@ -11,6 +11,7 @@ const game = {
     tps: 0,
     prestige: 0,
     energy: 0,
+    lastSessionTime: Date.now(), // オフラインボーナス用
 
     // アップグレード
     upgrades: [
@@ -121,6 +122,33 @@ function updateTPS() {
     tps *= 1 + game.upgrades[1].level * 0.5;
 
     game.tps = tps;
+}
+
+/**
+ * オフラインボーナスを計算・適用
+ */
+function applyOfflineBonus() {
+    const now = Date.now();
+    const offlineSeconds = (now - game.lastSessionTime) / 1000;
+
+    // 最大12時間分のボーナスをキャップ
+    const maxOfflineSeconds = 12 * 3600;
+    const bonusSeconds = Math.min(offlineSeconds, maxOfflineSeconds);
+
+    if (bonusSeconds > 60) { // 1分以上のオフラインで適用
+        const bonusTime = game.tps * bonusSeconds;
+        game.time += bonusTime;
+        game.totalEarned += bonusTime;
+
+        // オフラインボーナス表示
+        const bonusFormatted = formatTime(bonusTime);
+        const offlineFormatted = formatTime(bonusSeconds);
+        alert(`オフラインボーナス!\n${offlineFormatted}の間に\n+${bonusFormatted}を獲得しました！`);
+
+        console.log(`Offline bonus: +${bonusFormatted} (${offlineFormatted} offline)`);
+    }
+
+    game.lastSessionTime = now;
 }
 
 /**
@@ -280,6 +308,7 @@ setInterval(() => {
  * ゲームデータをLocalStorageに保存
  */
 function save() {
+    game.lastSessionTime = Date.now();
     localStorage.setItem("clockclicker", JSON.stringify(game));
 }
 
@@ -292,9 +321,14 @@ function normalizeGameData(data) {
     if (!data) return data;
 
     // トップレベルキーを数値化
-    ["time", "totalEarned", "clicks", "clickPower", "tps", "prestige", "energy"].forEach(k => {
+    ["time", "totalEarned", "clicks", "clickPower", "tps", "prestige", "energy", "lastSessionTime"].forEach(k => {
         if (data[k] !== undefined) data[k] = Number(data[k]);
     });
+
+    // lastSessionTimeが無い場合は現在時刻を設定
+    if (!data.lastSessionTime) {
+        data.lastSessionTime = Date.now();
+    }
 
     // itemsを整形（古いbaseフォーマットとの互換性対応）
     if (Array.isArray(data.items)) {
@@ -342,6 +376,10 @@ function load() {
         Object.assign(game, norm);
         if (norm.items) game.items = norm.items;
         if (norm.upgrades) game.upgrades = norm.upgrades;
+        
+        // オフラインボーナスを適用
+        applyOfflineBonus();
+        
         updateUI();
     } catch (e) {
         console.error("load failed:", e);
@@ -359,6 +397,7 @@ document.getElementById("loadBtn").onclick = load;
  * エクスポート: Base64でセーブデータをテキスト化
  */
 document.getElementById("exportBtn").onclick = () => {
+    game.lastSessionTime = Date.now();
     prompt("コピーしてください", btoa(JSON.stringify(game)));
 };
 
@@ -374,6 +413,10 @@ document.getElementById("importBtn").onclick = () => {
         Object.assign(game, norm);
         if (norm.items) game.items = norm.items;
         if (norm.upgrades) game.upgrades = norm.upgrades;
+        
+        // インポート時もオフラインボーナスを適用
+        applyOfflineBonus();
+        
         updateUI();
     } catch (e) {
         console.error("import failed:", e);
