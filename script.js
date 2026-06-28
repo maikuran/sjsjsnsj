@@ -350,78 +350,7 @@ document.getElementById("resetBtn").onclick=()=>{
 load();
 
 updateUI();
-    text-align:center;
-    color:#ffd54f;
-}
-
-#timeDisplay{
-    font-size:34px;
-    text-align:center;
-    margin:20px 0;
-    color:#7CFFB2;
-    word-break:break-word;
-}
-
-#perSecond{
-    text-align:center;
-    color:#90caf9;
-    margin-bottom:20px;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
-    background:#3b82f6;
-    color:white;
-    cursor:pointer;
-    font-size:16px;
-    transition:.2s;
-}
-
-button:hover{
-    background:#2563eb;
-    transform:scale(1.02);
-}
-
-button:active{
-    transform:scale(.98);
-}
-
-#clockButton{
-    height:70px;
-    font-size:22px;
-    background:#00b894;
-}
-
-#clockButton:hover{
-    background:#00a884;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-td{
-    padding:8px;
-    border-bottom:1px solid #444;
-}
-
-td:last-child{
-    text-align:right;
-}
-
-#upgradeList{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-}
-
-.upgrade{
-    background:#8e44ad;
+        background:#8e44ad;
 }
 
 .upgrade:hover{
