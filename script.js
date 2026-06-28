@@ -142,24 +142,29 @@ function updateUI(){
     document.getElementById("prestigeGain").textContent=
         "獲得:"+gain;
 
-    game.items.forEach((item,i)=>{
-    let div=document.getElementById("item"+i);
+    game.items.forEach((item, i) => {
+    let div = document.getElementById("item" + i);
     
-    div.onclick=()=>{
-        let cost=Math.floor(item.price*Math.pow(1.15,item.count));  // ← クリック時に計算
-        
-        div.innerHTML=
-        "<b>"+item.name+"</b><br>"+
-        "Lv:"+item.count+"<br>"+
-        "+"+item.generate+"/秒<br>"+
-        "Cost:"+formatTime(cost);
-
-        if(game.time>=cost){
-            game.time-=cost;
-            item.count++;
-            updateUI();
-        }
-    };
+    // ボタンの表示内容を常に更新
+    let cost = Math.floor(item.price * Math.pow(1.15, item.count));
+    div.innerHTML =
+        "<b>" + item.name + "</b><br>" +
+        "Lv:" + item.count + "<br>" +
+        "+"+item.generate+"/秒<br>" +
+        "Cost:" + formatTime(cost);
+    
+    // クリックイベントの設定（最初1回だけでOK）
+    if (!div.onclick) {
+        div.onclick = () => {
+            let cost = Math.floor(item.price * Math.pow(1.15, item.count));
+            
+            if(game.time >= cost) {
+                game.time -= cost;
+                item.count++;
+                updateUI();
+            }
+        };
+    }
 });
 
 //============================
