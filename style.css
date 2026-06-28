@@ -116,4 +116,88 @@ td:last-child{
 }
 
 .upgrade{
+    background:#8e44ad;
+}
+
+.upgrade:hover{
+    background:#732d91;
+}
+
+#prestigeButton{
+    background:#ff9800;
+    font-weight:bold;
+}
+
+#prestigeButton:hover{
+    background:#fb8c00;
+}
+
+#prestigeInfo p{
+    margin-bottom:12px;
+}
+
+#itemList{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.item{
+    background:#333;
+    border:2px solid #555;
+    border-radius:10px;
+    padding:10px;
+    min-height:110px;
+    cursor:pointer;
+    transition:.2s;
+    font-size:14px;
+}
+
+.item:hover{
+    background:#404040;
+    border-color:#7CFFB2;
+    transform:translateY(-2px);
+}
+
+.item b{
+    color:#ffd54f;
+}
+
+footer{
+    margin-top:30px;
+    padding:15px;
+    text-align:center;
+    color:#999;
+    border-top:2px solid #333;
+}
+
+/* スクロールバー */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:#222;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#555;
+    border-radius:6px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#777;
+}
+
+/* スマホ対応 */
+
+@media(max-width:1000px){
+
+    #game{
+        grid-template-columns:1fr;
+    }
+
+    #left,
+
 
