@@ -350,23 +350,4 @@ document.getElementById("resetBtn").onclick=()=>{
 load();
 
 updateUI();
-            #center,
-    #right{
-        width:100%;
-    }
-
-    #timeDisplay{
-        font-size:26px;
-    }
-
-    #clockButton{
-        height:60px;
-        font-size:20px;
-    }
-
-    #itemList{
-        grid-template-columns:1fr;
-    }
-
-}
-
+            
