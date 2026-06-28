@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Clock Clicker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+<h1>🕒 Clock Clicker</h1>
+<p>時計を進めて時間を集めよう！</p>
+</header>
+
+<div id="game">
+
+<!-- 左側 -->
+<section id="left">
+
+<div class="panel">
+
+<h2>現在の時間</h2>
+
+<div id="timeDisplay">
+0s
+</div>
+
+<div id="perSecond">
++0 / 秒
+</div>
+
+<button id="clockButton">
+🕒 時計を進める
+</button>
+
+</div>
+
+<div class="panel">
+
+<h2>統計</h2>
+
+<table>
+
+<tr>
+<td>総クリック</td>
+<td id="statClicks">0</td>
+</tr>
+
+<tr>
+<td>総獲得時間</td>
+<td id="statEarned">0s</td>
+</tr>
+
+<tr>
+<td>現在TPS</td>
+<td id="statTPS">0</td>
+</tr>
+
+<tr>
+<td>プレステージ回数</td>
+<td id="statPrestige">0</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="panel">
+
+<h2>セーブ</h2>
+
+<button id="saveBtn">保存</button>
+
+<button id="loadBtn">読込</button>
+
+<button id="exportBtn">書き出し</button>
+
+<button id="importBtn">読み込み</button>
+
+<button id="resetBtn">
+データ削除
+</button>
+
+</div>
+
+</section>
+
+<!-- 中央 -->
+<section id="center">
+
+<div class="panel">
+
+<h2>アップグレード</h2>
+
+<div id="upgradeList">
+
+<button class="upgrade" id="upgrade1">
+クリック強化
+</button>
+
+<button class="upgrade" id="upgrade2">
+時計効率
+</button>
+
+<button class="upgrade" id="upgrade3">
+時間圧縮
+</button>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<h2>プレステージ</h2>
+
+<div id="prestigeInfo">
+
+<p>
+時間を極めることで
+「時空エネルギー」を獲得できます。
+</p>
+
+<p id="prestigeGain">
+獲得:0
+</p>
+
+<button id="prestigeButton">
+プレステージ
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- 右側 -->
+<section id="right">
+
+<div class="panel">
+
+<h2>アイテム</h2>
+
+<div id="itemList">
+
+<div class="item" id="item0"></div>
+<div class="item" id="item1"></div>
+<div class="item" id="item2"></div>
+<div class="item" id="item3"></div>
+<div class="item" id="item4"></div>
+<div class="item" id="item5"></div>
+<div class="item" id="item6"></div>
+<div class="item" id="item7"></div>
+
+<div class="item" id="item8"></div>
+<div class="item" id="item9"></div>
+<div class="item" id="item10"></div>
+<div class="item" id="item11"></div>
+<div class="item" id="item12"></div>
+<div class="item" id="item13"></div>
+<div class="item" id="item14"></div>
+<div class="item" id="item15"></div>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<footer>
+
+Clock Clicker
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
