@@ -298,17 +298,7 @@ function save(){
 
 }
 
-function load(){
 
-    let s=localStorage.getItem("clockclicker");
-
-    if(!s)return;
-
-    Object.assign(game,JSON.parse(s));
-
-    updateUI();
-
-}
 
 document.getElementById("saveBtn").onclick=save;
 
@@ -323,17 +313,8 @@ document.getElementById("exportBtn").onclick=()=>{
 
 };
 
-document.getElementById("importBtn").onclick=()=>{
 
-    let s=prompt("貼り付け");
 
-    if(!s)return;
-
-    Object.assign(game,JSON.parse(atob(s)));
-
-    updateUI();
-
-};
 
 document.getElementById("resetBtn").onclick=()=>{
 
@@ -350,3 +331,80 @@ document.getElementById("resetBtn").onclick=()=>{
 load();
 
 updateUI();
+
+
+// セーブデータ互換化ヘルパー
+function normalizeGameData(data){
+    if(!data) return data;
+
+    // 数値化するトップレベルキー
+    ["time","totalEarned","clicks","clickPower","tps","prestige","energy"].forEach(k=>{
+        if(data[k] !== undefined) data[k] = Number(data[k]);
+    });
+
+    // items を整形（古い base を price/generate に移す）
+    if(Array.isArray(data.items)){
+        data.items = data.items.map((it, idx) => {
+            it = it || {};
+            // 優先順: generate, price, base, 既存 game 配列の値
+            const baseVal = it.base ?? it.price ?? it.generate ?? (game.items[idx] && (game.items[idx].generate ?? game.items[idx].price)) ?? 0;
+            const generate = Number(it.generate ?? it.base ?? it.price ?? baseVal);
+            const price = Number(it.price ?? it.base ?? it.generate ?? baseVal);
+            const count = Number(it.count ?? 0);
+            return {
+                name: it.name ?? (game.items[idx] && game.items[idx].name) ?? ("item"+idx),
+                generate: isFinite(generate) ? generate : 0,
+                price: isFinite(price) ? price : 0,
+                count: isFinite(count) ? count : 0
+            };
+        });
+    }
+
+    // upgrades の数値化（安全策）
+    if(Array.isArray(data.upgrades)){
+        data.upgrades = data.upgrades.map((u, idx) => {
+            u = u || {};
+            return {
+                level: Number(u.level ?? 0),
+                cost: Number(u.cost ?? (game.upgrades[idx] && game.upgrades[idx].cost) ?? 0)
+            };
+        });
+    }
+
+    return data;
+}
+
+// load() の置き換え
+function load(){
+    let s = localStorage.getItem("clockclicker");
+    if(!s) return;
+
+    try {
+        const parsed = JSON.parse(s);
+        const norm = normalizeGameData(parsed);
+        // top-level を上書き（安全のため items/upgrades は norm があれば置換）
+        Object.assign(game, norm);
+        if(norm.items) game.items = norm.items;
+        if(norm.upgrades) game.upgrades = norm.upgrades;
+        updateUI();
+    } catch(e){
+        console.error("load failed:", e);
+    }
+}
+
+// import ボタンハンドラの置き換え
+document.getElementById("importBtn").onclick = ()=>{
+    let s = prompt("貼り付け");
+    if(!s) return;
+    try{
+        const parsed = JSON.parse(atob(s));
+        const norm = normalizeGameData(parsed);
+        Object.assign(game, norm);
+        if(norm.items) game.items = norm.items;
+        if(norm.upgrades) game.upgrades = norm.upgrades;
+        updateUI();
+    }catch(e){
+        console.error("import failed:", e);
+        alert("読み込みに失敗しました。入力が正しいか確認してください。");
+    }
+};  
